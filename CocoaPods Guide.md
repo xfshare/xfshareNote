@@ -9,8 +9,8 @@
 
 ## Install
 		
-	>Setting up CocoaPods master repo,一直处在这个状态,下载所需文件,文件目录 ~/.cocoapods 使用du -sh * 查看文件夹大小,大约会在120多MB
-	
+>Setting up CocoaPods master repo,一直处在这个状态,下载所需文件,文件目录 ~/.cocoapods 使用du -sh * 查看文件夹大小,大约会在120多MB
+
 		sudo gem install cocoapods
 		
 ## Use
