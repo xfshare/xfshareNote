@@ -1,7 +1,8 @@
 <ul id="tree" class="ztree"></ul>
 <article class='markdown-body'>
-### NSLog Define
 
+# Foundation
+### NSLog Define
 	#ifdef DEBUG
 	#define NSLog(FORMAT, ...) fprintf(stderr,"%s:%d\t%s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 	#else
@@ -199,15 +200,28 @@
 	
 	bounds.size && frame.size 取小的 size 显示
     
+### __bridge
+	
+	__bridge:只做类型转换,不修改内存管理权
+	__bridge_retained:类型转换,同时将内存管理权从 ARC 中删除,需要使用CFRelease释放内存
+	__bridge_transfer:CF 类型转换成 Object 类型,将内存管理权交给 ARC
     
     
+    //设置context
+	void dispatch_set_context ( dispatch_object_t object, void *context );
+	//获取context
+	void * dispatch_get_context ( dispatch_object_t object );
+	
+	context是一个“void类型指针”，C语言，void型指针可以指向任意类型，就是说，context在这里可以是任意类型的指针
     
+
+# UIKit    
+### UICollectionViewLayout
     
-    
-    
-    
-    
-    
+    -(void)prepareLayout
+    - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
+    -(CGSize)collectionViewContentSize{
+
     
     
     
@@ -215,8 +229,6 @@
     
 #End    
 </article>
-
-
 <script type="text/javascript" src="http://i5ting.github.io/git-quick-start/preview/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="http://i5ting.github.io/git-quick-start/preview/js/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript" src="http://i5ting.github.io/git-quick-start/preview/js/jquery.ztree_toc.js"></script>
