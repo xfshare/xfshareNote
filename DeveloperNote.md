@@ -213,6 +213,24 @@
 	void * dispatch_get_context ( dispatch_object_t object );
 	
 	context是一个“void类型指针”，C语言，void型指针可以指向任意类型，就是说，context在这里可以是任意类型的指针
+	
+### 字符
+
+判断占几个字符
+
+	- (NSInteger)getToInt:(NSString*)strtemp
+	{
+    	NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+
+    	NSData* da = [strtemp dataUsingEncoding:enc];
+    	return [da length];
+	}
+	
+### 类名
+	//获取类名
+	NSString *className = [NSString stringWithUTF8String:object_getClassName(obj)];	
+
+	
     
 
 # UIKit    
@@ -220,11 +238,119 @@
     
     -(void)prepareLayout
     - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
-    -(CGSize)collectionViewContentSize{
+    -(CGSize)collectionViewContentSize
+    
+### UIView
+	
+* layoutSubviews
+
+		layoutSubviews触发时机
+		1. init初始化不会触发layoutSubviews,但是initWithFrame会
+		2. addSubview会触发layoutSubviews
+		3. 设置view的Frame会触发layoutSubviews，当然前提是frame的值设置前后发生了变化
+		4. 滚动一个UIScrollView会触发layoutSubviews
+		5. 旋转Screen会触发父UIView上的layoutSubviews事件
+		6. 改变一个UIView大小的时候也会触发父UIView上的layoutSubviews事件
+		
+* setNeedsLayout
+		
+		标记为需要重新刷新布局,异步调用 layoutIfNeeded刷新布局,不立即刷新,但是 layoutSubviews 一定会被调用
+		
+* layoutIfNeeded
+		
+		如果有刷新的标记,立即调用layoutSubviews进行布局(如果没有,不调用 layoutSubviews)
+		
+***如果想要立即刷新,先调用 setNeedsLayout,把标记设置为需要布局,然后马上调用 layoutIfNeeded,实现布局***
+
+* setNeedsDisplay
+
+		setNeedsDisplay调用drawRect
+		
+
+### UITextField
+
+* TextField 禁止贴边对齐
+	
+		UIView *clearView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 5, 0)];
+		textField.leftView = clearView;
+		textField.leftViewMode = UITextFieldViewModeAlways;
+
+### UIWebView
+
+* 透明
+	
+		myWebView.opaque = NO;
+	
+* 文本颜色
+	
+		[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor= '%@‘“,@“#fff444"]];
+	
+* 文本大小
+	
+		[webVie stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '150%'”];	
+	
+### UIButton
+
+* Title 左对齐
+
+		button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+		button.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+	
+	
+		
+		
 
     
     
+# Tips
+### 企业级分发
+
+* [Xcode 6.1 做ipa企业级分发(In-House模式)详细步骤](http://blog.csdn.net/pang040328/article/details/40924737)
+	
+	[企业证书 Plist 文件](./source/AppName.plist)
+	
+### Appstore 商品
+
+	NSString *appleID = @"XXXXXX";
+    NSString *str = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@",appleID];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]]; 
+### 隐藏键盘
+	
+* [TableView Tap 空白,隐藏键盘](http://blog.csdn.net/xiazailushang/article/details/10941471)
     
+		UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignAllFirstResponder)];
+
+    	tapGesture.delegate = self;
+
+		[upImageTableView addGestureRecognizer:tapGesture];
+
+
+		- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+
+		{
+
+		// 输出点击的view的类名
+
+	    NSLog(@"%@", NSStringFromClass([touch.view class]));
+
+	    // 若为UITableViewCellContentView（即点击了tableViewCell），则不截获Touch事件
+
+    	if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+
+        return NO;
+
+    	}
+
+    	return  YES;
+
+		}
+
+# WebSite
+* [Apple developer](https://developer.apple.com)
+* [iTunes Connect](https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa)
+* [蒲公英(第三方应用托管平台)](http://www.pgyer.com/)
+
+	
     
     
 #End    
